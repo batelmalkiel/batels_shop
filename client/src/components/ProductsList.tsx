@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
   Container,
-  Grid,
   Card,
   CardMedia,
   CardContent,
@@ -18,6 +17,7 @@ import {
   Pagination,
   CircularProgress,
 } from '@mui/material';
+import Grid from '@mui/material/Grid'
 import { Diamond, ShoppingCart } from '@mui/icons-material';
 import { Product, MetalType } from '../types/product.types';
 

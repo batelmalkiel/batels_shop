@@ -9,6 +9,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@mui/icons-material": "^5.18.0",
+    "@mui/material": "^5.18.0",
+    "@mui/system": "^5.18.0",
     "axios": "^1.6.8",
     "bootstrap": "^4.6.2",
     "react": "^18.2.0",
@@ -30,4 +33,3 @@
     "vite": "^5.1.6"
   }
 }
-

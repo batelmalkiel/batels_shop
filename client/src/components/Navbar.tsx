@@ -21,8 +21,6 @@ import { useNavigate } from 'react-router-dom';
 
 export const Navbar: React.FC = () => {
   const navigate = useNavigate();
-  const { isAuthenticated, user, logout } = useAuth();
-  const { totalItems } = useCart();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -33,11 +31,6 @@ export const Navbar: React.FC = () => {
     setAnchorEl(null);
   };
 
-  const handleLogout = () => {
-    logout();
-    handleClose();
-    navigate('/');
-  };
 
   return (
     <AppBar 
@@ -93,7 +86,7 @@ export const Navbar: React.FC = () => {
           תכשיטים
         </Button>
 
-        {isAuthenticated && (
+        {(
           <Button 
             color="inherit" 
             onClick={() => navigate('/orders')}
@@ -108,22 +101,8 @@ export const Navbar: React.FC = () => {
           </Button>
         )}
 
-        <IconButton 
-          color="inherit" 
-          onClick={() => navigate('/cart')}
-          sx={{ 
-            '&:hover': { 
-              color: '#FFD700',
-              transform: 'scale(1.1)'
-            }
-          }}
-        >
-          <Badge badgeContent={totalItems} color="error">
-            <ShoppingCart />
-          </Badge>
-        </IconButton>
 
-        {isAuthenticated ? (
+        {(
           <Box>
             <IconButton 
               color="inherit" 
@@ -136,51 +115,8 @@ export const Navbar: React.FC = () => {
             >
               <AccountCircle />
             </IconButton>
-            <Menu
-              anchorEl={anchorEl}
-              open={Boolean(anchorEl)}
-              onClose={handleClose}
-            >
-              <MenuItem disabled>
-                {user?.firstName} {user?.lastName}
-              </MenuItem>
-              <MenuItem onClick={() => { navigate('/orders'); handleClose(); }}>
-                ההזמנות שלי
-              </MenuItem>
-              <MenuItem onClick={handleLogout}>התנתק</MenuItem>
-            </Menu>
           </Box>
-        ) : (
-          <Box>
-            <Button 
-              color="inherit" 
-              onClick={() => navigate('/login')}
-              sx={{ 
-                '&:hover': { 
-                  color: '#FFD700'
-                }
-              }}
-            >
-              התחבר
-            </Button>
-            <Button 
-              variant="outlined"
-              onClick={() => navigate('/register')}
-              sx={{ 
-                ml: 1,
-                borderColor: '#FFD700',
-                color: '#FFD700',
-                '&:hover': { 
-                  borderColor: '#FFF',
-                  bgcolor: '#FFD700',
-                  color: '#000'
-                }
-              }}
-            >
-              הירשם
-            </Button>
-          </Box>
-        )}
+        ) }
       </Toolbar>
     </AppBar>
   );
