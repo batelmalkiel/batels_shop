@@ -1,18 +1,29 @@
--- Jewelry Shop DML
+-- Jewelry Shop DML (Schema: shop)
 
-TRUNCATE TABLE order_items, orders, products, users RESTART IDENTITY CASCADE;
+TRUNCATE TABLE 
+    shop.order_items, 
+    shop.orders, 
+    shop.products, 
+    shop.users
+RESTART IDENTITY CASCADE;
 
+-----------------------------------------
 -- Insert Users
+-----------------------------------------
 
-INSERT INTO users (email, password, first_name, last_name, phone, address) VALUES
+INSERT INTO shop.users (email, password, first_name, last_name, phone, address) VALUES
 ('sarah.gold@example.com', '$2b$10$HashedPassword', 'Sarah', 'Gold', '050-1234567', 'Tel Aviv, Rothschild 45'),
 ('david.diamond@example.com', '$2b$10$HashedPassword', 'David', 'Diamond', '052-9876543', 'Jerusalem, King David 12'),
 ('rachel.ruby@example.com', '$2b$10$HashedPassword', 'Rachel', 'Ruby', '054-5555555', 'Ramat Gan, Bialik 88');
 
+-----------------------------------------
 -- Insert Jewelry Products
+-----------------------------------------
 
--- טבעות אירוסין (Engagement Rings)
-INSERT INTO products (name, description, price, category, metal_type, metal_weight, stone_type, stone_carat, stone_clarity, stone_color, image_url, stock, collection, tags) VALUES
+-- Engagement Rings
+INSERT INTO shop.products 
+(name, description, price, category, metal_type, metal_weight, stone_type, stone_carat, stone_clarity, stone_color, image_url, stock, collection, tags)
+VALUES
 (
     'טבעת אירוסין סוליטר קלאסית',
     'טבעת אירוסין יהלום סוליטר מדהימה בזהב לבן 14K. יהלום מרכזי איכותי בחיתוך עגול מושלם.',
@@ -62,8 +73,10 @@ INSERT INTO products (name, description, price, category, metal_type, metal_weig
     ARRAY['אירוסין', 'רוז גולד', 'מודרני']
 );
 
--- שרשראות ותליונים (Necklaces & Pendants)
-INSERT INTO products (name, description, price, category, metal_type, metal_weight, stone_type, stone_carat, stone_clarity, image_url, stock, collection, tags) VALUES
+-- Necklaces & Pendants
+INSERT INTO shop.products 
+(name, description, price, category, metal_type, metal_weight, stone_type, stone_carat, stone_clarity, image_url, stock, collection, tags)
+VALUES
 (
     'שרשרת יהלום לב',
     'שרשרת זהב לבן עדינה עם תליון לב משובץ יהלומים. מתנה מושלמת.',
@@ -110,8 +123,10 @@ INSERT INTO products (name, description, price, category, metal_type, metal_weig
     ARRAY['שרשרת', 'זהב', 'קלאסי']
 );
 
--- עגילים (Earrings)
-INSERT INTO products (name, description, price, category, metal_type, metal_weight, stone_type, stone_carat, stone_clarity, image_url, stock, collection, tags) VALUES
+-- Earrings
+INSERT INTO shop.products 
+(name, description, price, category, metal_type, metal_weight, stone_type, stone_carat, stone_clarity, image_url, stock, collection, tags)
+VALUES
 (
     'עגילי יהלום סטאד',
     'עגילי יהלום סטאד קלאסיים בזהב לבן 14K. אלגנטיים ועדינים.',
@@ -158,8 +173,10 @@ INSERT INTO products (name, description, price, category, metal_type, metal_weig
     ARRAY['עגילים', 'חישוק', 'זהב']
 );
 
--- צמידים (Bracelets)
-INSERT INTO products (name, description, price, category, metal_type, metal_weight, stone_type, image_url, stock, collection, tags) VALUES
+-- Bracelets
+INSERT INTO shop.products 
+(name, description, price, category, metal_type, metal_weight, stone_type, image_url, stock, collection, tags)
+VALUES
 (
     'צמיד טניס יהלומים',
     'צמיד טניס קלאסי משובץ יהלומים בזהב לבן 14K.',
@@ -187,8 +204,10 @@ INSERT INTO products (name, description, price, category, metal_type, metal_weig
     ARRAY['צמיד', 'זהב', 'חוליות']
 );
 
--- טבעות (Rings)
-INSERT INTO products (name, description, price, category, metal_type, metal_weight, stone_type, image_url, stock, collection, tags) VALUES
+-- Rings
+INSERT INTO shop.products 
+(name, description, price, category, metal_type, metal_weight, stone_type, image_url, stock, collection, tags)
+VALUES
 (
     'טבעת נישואין זהב לבן',
     'טבעת נישואין קלאסית בזהב לבן 14K עם גימור מבריק.',
@@ -229,32 +248,42 @@ INSERT INTO products (name, description, price, category, metal_type, metal_weig
     ARRAY['טבעת', 'פלטינה', 'מינימליסטי']
 );
 
+-----------------------------------------
 -- Insert Sample Orders
+-----------------------------------------
 
--- Order 1: Sarah bought engagement ring
-INSERT INTO orders (user_id, total_amount, status, shipping_address, gift_wrap, gift_message) VALUES
+-- Order 1
+INSERT INTO shop.orders (user_id, total_amount, status, shipping_address, gift_wrap, gift_message)
+VALUES
 (1, 15999.00, 'delivered', 'Tel Aviv, Rothschild 45, Apt 12', true, 'To my beloved ❤️');
 
-INSERT INTO order_items (order_id, product_id, quantity, price_at_purchase, ring_size) VALUES
+INSERT INTO shop.order_items 
+(order_id, product_id, quantity, price_at_purchase, ring_size)
+VALUES
 (1, 1, 1, 15999.00, '6.5');
 
-UPDATE products SET stock = stock - 1 WHERE id = 1;
+UPDATE shop.products SET stock = stock - 1 WHERE id = 1;
 
--- Order 2: David bought necklace and earrings
-INSERT INTO orders (user_id, total_amount, status, shipping_address, gift_wrap) VALUES
+-- Order 2
+INSERT INTO shop.orders (user_id, total_amount, status, shipping_address, gift_wrap)
+VALUES
 (2, 11998.00, 'shipped', 'Jerusalem, King David 12', true);
 
-INSERT INTO order_items (order_id, product_id, quantity, price_at_purchase) VALUES
-(2, 4, 1, 4999.00),  -- Heart necklace
-(2, 8, 1, 6999.00);  -- Diamond studs
+INSERT INTO shop.order_items (order_id, product_id, quantity, price_at_purchase)
+VALUES
+(2, 4, 1, 4999.00),
+(2, 8, 1, 6999.00);
 
-UPDATE products SET stock = stock - 1 WHERE id IN (4, 8);
+UPDATE shop.products SET stock = stock - 1 WHERE id IN (4, 8);
 
--- Order 3: Rachel - pending order
-INSERT INTO orders (user_id, total_amount, status, shipping_address, notes) VALUES
+-- Order 3
+INSERT INTO shop.orders (user_id, total_amount, status, shipping_address, notes)
+VALUES
 (3, 24999.00, 'pending', 'Ramat Gan, Bialik 88', 'Please call before delivery');
 
-INSERT INTO order_items (order_id, product_id, quantity, price_at_purchase, ring_size, engraving_text) VALUES
+INSERT INTO shop.order_items 
+(order_id, product_id, quantity, price_at_purchase, ring_size, engraving_text)
+VALUES
 (3, 2, 1, 24999.00, '7', 'Forever & Always');
 
-UPDATE products SET stock = stock - 1 WHERE id = 2;
+UPDATE shop.products SET stock = stock - 1 WHERE id = 2;
