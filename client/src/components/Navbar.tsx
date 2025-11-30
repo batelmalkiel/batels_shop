@@ -101,6 +101,7 @@ export const Navbar: React.FC = () => {
 
 
         {(
+            //Add later logout, account options...
           <Box>
             <IconButton 
               color="inherit" 
