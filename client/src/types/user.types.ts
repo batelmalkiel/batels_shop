@@ -5,6 +5,9 @@ export interface User {
   lastName: string;
   phone?: string;
   address?: string;
+  provider: 'local' | 'google';
+  googleId?: string;
+  profilePicture?: string;
   createdAt: string;
   updatedAt: string;
 }

@@ -1,6 +1,6 @@
 // src/auth/auth.controller.ts
 import { Controller, Post, Body, Get, UseGuards, Req, Res } from '@nestjs/common';
-import { Response } from 'express';
+import express from 'express';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
@@ -41,7 +41,7 @@ export class AuthController {
 
   @Get('google/callback')
   @UseGuards(AuthGuard('google'))
-  async googleAuthCallback(@Req() req, @Res() res: Response) {
+  async googleAuthCallback(@Req() req, @Res() res: express.Response) {
     const result = await this.authService.googleLogin(req.user);
     
     // מפנה חזרה לאפליקציה עם הטוקן

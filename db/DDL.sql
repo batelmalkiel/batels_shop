@@ -37,15 +37,19 @@ CREATE TABLE shop.users (
     last_name VARCHAR(100) NOT NULL,
     phone VARCHAR(20),
     address TEXT,
+    provider VARCHAR(20) NOT NULL DEFAULT 'local',
+    google_id VARCHAR(255) UNIQUE,
+    profile_picture TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT email_format CHECK (
-        email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'
-    )
+        email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'),
+    CONSTRAINT provider_check CHECK (provider IN ('local', 'google'))
 );
 
 CREATE INDEX idx_users_email ON shop.users(email);
+CREATE INDEX idx_users_google_id ON shop.users(google_id) WHERE google_id IS NOT NULL;
 
 -- Products Table
 
