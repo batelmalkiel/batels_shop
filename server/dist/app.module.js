@@ -32,7 +32,7 @@ exports.AppModule = AppModule = __decorate([
                     username: config.get('DB_USERNAME', 'postgres'),
                     password: config.get('DB_PASSWORD', 'postgres'),
                     database: config.get('DB_NAME', 'jewelry_shop'),
-                    entities: [__dirname + '/**/*.entity{.ts}'],
+                    entities: [__dirname + '/**/*.entity{.ts,.js}'],
                     synchronize: true,
                     logging: false,
                 }),

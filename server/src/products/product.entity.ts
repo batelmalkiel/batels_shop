@@ -47,6 +47,7 @@ export class Product {
   @Column({
     type: 'enum',
     enum: MetalType,
+    default: MetalType.GOLD,
   })
   metalType: MetalType;
 

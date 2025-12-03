@@ -78,6 +78,7 @@ __decorate([
     (0, typeorm_1.Column)({
         type: 'enum',
         enum: MetalType,
+        default: MetalType.GOLD,
     }),
     __metadata("design:type", String)
 ], Product.prototype, "metalType", void 0);
