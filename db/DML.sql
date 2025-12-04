@@ -12,7 +12,7 @@ RESTART IDENTITY CASCADE;
 INSERT INTO shop.users (email, password, first_name, last_name, phone, address, provider) VALUES
 ('sarah.gold@example.com', '$2b$10$HashedPassword', 'Sarah', 'Gold', '050-1234567', 'Tel Aviv, Rothschild 45', 'local'),
 ('david.diamond@example.com', '$2b$10$HashedPassword', 'David', 'Diamond', '052-9876543', 'Jerusalem, King David 12', 'local'),
-('rachel.ruby@example.com', '$2b$10$HashedPassword', 'Rachel', 'Ruby', '054-5555555', 'Ramat Gan, Bialik 88', 'local');
+('rachel.ruby@example.com', '$2b$10$HashedPassword', 'Rachel', 'Ruby', '054-5555555', 'Ramat Gan, Bialik 88', 'local'),
 ('emma.pearl@gmail.com', NULL, 'Emma', 'Pearl', '053-1112223', 'Herzliya, HaYarkon 200', 'google');
 
 -- Insert Jewelry Products

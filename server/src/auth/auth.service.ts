@@ -71,6 +71,8 @@ export class AuthService {
     });
 
     if (!user) {
+      console.log('Google profile:', profile);
+
       user = await this.usersRepository.findOne({
         where: { email: profile.emails[0].value }
       });

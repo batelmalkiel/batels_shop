@@ -1,13 +1,15 @@
 // src/router/paths.tsx
 import { Home } from "../views/Home";
-import { Products } from "../views/Products";
-import { Cart } from "../views/Cart";
-import { Checkout } from "../views/Checkout";
-import { Orders } from "../views/Orders";
+import { Cart } from "../views/cart";
+import { Checkout } from "../views/checkout";
+import { Orders } from "../views/orders";
 import { OrderDetail } from "../views/OrderDetail";
 import { Login } from "../views/login";
 import { Register } from "../views/register";
+import { GoogleCallback } from "../views/GoogleCallback";
 import { Layout } from "../views/Layout";
+
+
 
 export interface Page {
   path: string;
@@ -22,12 +24,6 @@ export const routes: Page[] = [
     path: "/",
     element: <Home />,
     name: "בית",
-    isShown: true,
-  },
-  {
-    path: "/products",
-    element: <Products />,
-    name: "תכשיטים",
     isShown: true,
   },
   {
@@ -67,6 +63,12 @@ export const routes: Page[] = [
     path: "/register",
     element: <Register />,
     name: "הירשם",
+    isShown: false,
+  },
+  {
+    path: "/auth/callback",
+    element: <GoogleCallback />,
+    name: "Google Callback",
     isShown: false,
   },
 ];

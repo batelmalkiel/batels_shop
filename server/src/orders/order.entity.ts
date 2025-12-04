@@ -19,22 +19,29 @@ export enum OrderStatus {
   CANCELLED = 'cancelled',
 }
 
-@Entity('orders')
+@Entity({ name: 'orders' })
 export class Order {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => User, (user) => user.orders)
-  @JoinColumn({ name: 'userId' })
-  user: User;
-
-  @Column()
+  /** FK user_id */
+  @Column({ name: 'user_id' })
   userId: number;
+
+  @ManyToOne(() => User, (user) => user.orders, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'user_id' })
+  user: User;
 
   @OneToMany(() => OrderItem, (orderItem) => orderItem.order, { cascade: true })
   items: OrderItem[];
 
-  @Column('decimal', { precision: 10, scale: 2 })
+  /** FIXED: DB column is total_amount, not totalAmount */
+  @Column('decimal', {
+    precision: 10,
+    scale: 2,
+    name: 'total_amount',
+    default: 0,
+  })
   totalAmount: number;
 
   @Column({
@@ -44,56 +51,61 @@ export class Order {
   })
   status: OrderStatus;
 
-  @Column()
+  /** shipping_address already correct */
+  @Column({ name: 'shipping_address' })
   shippingAddress: string;
 
   @Column({ nullable: true })
   notes: string;
 
-  @Column({ default: false })
+  @Column({ name: 'gift_wrap', default: false })
   giftWrap: boolean;
 
-  @Column({ nullable: true })
+  @Column({ name: 'gift_message', nullable: true })
   giftMessage: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 }
 
-@Entity('order_items')
+@Entity({ name: 'order_items' })
 export class OrderItem {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Order, (order) => order.items, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'orderId' })
-  order: Order;
-
-  @Column()
+  @Column({ name: 'order_id' })
   orderId: number;
 
-  @ManyToOne(() => Product)
-  @JoinColumn({ name: 'productId' })
-  product: Product;
+  @ManyToOne(() => Order, (order) => order.items, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'order_id' })
+  order: Order;
 
-  @Column()
+  @Column({ name: 'product_id' })
   productId: number;
+
+  @ManyToOne(() => Product, { onDelete: 'RESTRICT' })
+  @JoinColumn({ name: 'product_id' })
+  product: Product;
 
   @Column()
   quantity: number;
 
-  @Column('decimal', { precision: 10, scale: 2 })
+  @Column('decimal', {
+    precision: 10,
+    scale: 2,
+    name: 'price_at_purchase',
+  })
   priceAtPurchase: number;
 
-  @Column({ nullable: true })
-  engravingText: string; // חריטה אישית
+  @Column({ name: 'engraving_text', nullable: true })
+  engravingText: string;
 
-  @Column({ nullable: true })
-  ringSize: string; // מידת טבעת
+  @Column({ name: 'ring_size', nullable: true })
+  ringSize: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 }

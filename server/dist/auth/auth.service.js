@@ -95,6 +95,7 @@ let AuthService = class AuthService {
             where: { googleId: profile.id }
         });
         if (!user) {
+            console.log('Google profile:', profile);
             user = await this.usersRepository.findOne({
                 where: { email: profile.emails[0].value }
             });

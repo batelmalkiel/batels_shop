@@ -76,18 +76,24 @@ __decorate([
 ], Product.prototype, "category", void 0);
 __decorate([
     (0, typeorm_1.Column)({
+        name: 'metal_type',
         type: 'enum',
         enum: MetalType,
-        default: MetalType.GOLD,
     }),
     __metadata("design:type", String)
 ], Product.prototype, "metalType", void 0);
 __decorate([
-    (0, typeorm_1.Column)('decimal', { precision: 6, scale: 2, nullable: true }),
+    (0, typeorm_1.Column)('decimal', {
+        name: 'metal_weight',
+        precision: 6,
+        scale: 2,
+        nullable: true,
+    }),
     __metadata("design:type", Number)
 ], Product.prototype, "metalWeight", void 0);
 __decorate([
     (0, typeorm_1.Column)({
+        name: 'stone_type',
         type: 'enum',
         enum: StoneType,
         default: StoneType.NONE,
@@ -95,31 +101,36 @@ __decorate([
     __metadata("design:type", String)
 ], Product.prototype, "stoneType", void 0);
 __decorate([
-    (0, typeorm_1.Column)('decimal', { precision: 6, scale: 2, nullable: true }),
+    (0, typeorm_1.Column)('decimal', {
+        name: 'stone_carat',
+        precision: 6,
+        scale: 2,
+        nullable: true,
+    }),
     __metadata("design:type", Number)
 ], Product.prototype, "stoneCarat", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ nullable: true }),
+    (0, typeorm_1.Column)({ name: 'stone_clarity', nullable: true }),
     __metadata("design:type", String)
 ], Product.prototype, "stoneClarity", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ nullable: true }),
+    (0, typeorm_1.Column)({ name: 'stone_color', nullable: true }),
     __metadata("design:type", String)
 ], Product.prototype, "stoneColor", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ name: 'image_url' }),
     __metadata("design:type", String)
 ], Product.prototype, "imageUrl", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ default: 0 }),
+    (0, typeorm_1.Column)({ name: 'stock', default: 0 }),
     __metadata("design:type", Number)
 ], Product.prototype, "stock", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ default: true }),
+    (0, typeorm_1.Column)({ name: 'is_active', default: true }),
     __metadata("design:type", Boolean)
 ], Product.prototype, "isActive", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ default: false }),
+    (0, typeorm_1.Column)({ name: 'is_custom_made', default: false }),
     __metadata("design:type", Boolean)
 ], Product.prototype, "isCustomMade", void 0);
 __decorate([
@@ -131,11 +142,11 @@ __decorate([
     __metadata("design:type", Array)
 ], Product.prototype, "tags", void 0);
 __decorate([
-    (0, typeorm_1.CreateDateColumn)(),
+    (0, typeorm_1.CreateDateColumn)({ name: 'created_at' }),
     __metadata("design:type", Date)
 ], Product.prototype, "createdAt", void 0);
 __decorate([
-    (0, typeorm_1.UpdateDateColumn)(),
+    (0, typeorm_1.UpdateDateColumn)({ name: 'updated_at' }),
     __metadata("design:type", Date)
 ], Product.prototype, "updatedAt", void 0);
 exports.Product = Product = __decorate([

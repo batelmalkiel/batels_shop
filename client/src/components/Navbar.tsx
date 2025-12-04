@@ -5,17 +5,14 @@ import {
   Typography,
   Button,
   IconButton,
-  Badge,
-  Box,
-  Menu,
-  MenuItem,
 } from '@mui/material';
 import {
-  ShoppingCart,
-  AccountCircle,
   Diamond,
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+
+import { routes, Page } from "../router/paths";
+
 
 export const Navbar: React.FC = () => {
   const navigate = useNavigate();
@@ -39,20 +36,6 @@ export const Navbar: React.FC = () => {
       }}
     >
       <Toolbar>
-        <IconButton
-          edge="start"
-          color="inherit"
-          onClick={() => navigate('/')}
-          sx={{ 
-            mr: 2,
-            '&:hover': {
-              transform: 'rotate(20deg)',
-              transition: 'transform 0.3s'
-            }
-          }}
-        >
-          <Diamond sx={{ color: '#FFD700', fontSize: 35 }} />
-        </IconButton>
 
         <Typography
           variant="h5"
@@ -66,14 +49,16 @@ export const Navbar: React.FC = () => {
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
           }}
-          onClick={() => navigate('/')}
         >
-          ✨ Luxury Jewelry ✨
+          Luxury Jewelry!
         </Typography>
 
-        <Button 
+          {routes
+          .filter((route: Page) => route.isShown)
+          .map((route: Page) => (
+            <Button 
           color="inherit" 
-          onClick={() => navigate('/')}
+          onClick={() => navigate(route.path)}
           sx={{ 
             '&:hover': { 
               color: '#FFD700',
@@ -81,41 +66,9 @@ export const Navbar: React.FC = () => {
             }
           }}
         >
-          תכשיטים
-        </Button>
-
-        {(
-          <Button 
-            color="inherit" 
-            onClick={() => navigate('/orders')}
-            sx={{ 
-              '&:hover': { 
-                color: '#FFD700',
-                transform: 'scale(1.05)'
-              }
-            }}
-          >
-            ההזמנות שלי
-          </Button>
-        )}
-
-
-        {(
-            //Add later logout, account options...
-          <Box>
-            <IconButton 
-              color="inherit" 
-              onClick={handleMenu}
-              sx={{ 
-                '&:hover': { 
-                  color: '#FFD700'
-                }
-              }}
-            >
-              <AccountCircle />
-            </IconButton>
-          </Box>
-        ) }
+             {route.name}
+            </Button>
+          ))}
       </Toolbar>
     </AppBar>
   );

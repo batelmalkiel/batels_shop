@@ -23,8 +23,8 @@ var OrderStatus;
 })(OrderStatus || (exports.OrderStatus = OrderStatus = {}));
 let Order = class Order {
     id;
-    user;
     userId;
+    user;
     items;
     totalAmount;
     status;
@@ -41,20 +41,25 @@ __decorate([
     __metadata("design:type", Number)
 ], Order.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => user_entity_1.User, (user) => user.orders),
-    (0, typeorm_1.JoinColumn)({ name: 'userId' }),
-    __metadata("design:type", user_entity_1.User)
-], Order.prototype, "user", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ name: 'user_id' }),
     __metadata("design:type", Number)
 ], Order.prototype, "userId", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => user_entity_1.User, (user) => user.orders, { onDelete: 'CASCADE' }),
+    (0, typeorm_1.JoinColumn)({ name: 'user_id' }),
+    __metadata("design:type", user_entity_1.User)
+], Order.prototype, "user", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => OrderItem, (orderItem) => orderItem.order, { cascade: true }),
     __metadata("design:type", Array)
 ], Order.prototype, "items", void 0);
 __decorate([
-    (0, typeorm_1.Column)('decimal', { precision: 10, scale: 2 }),
+    (0, typeorm_1.Column)('decimal', {
+        precision: 10,
+        scale: 2,
+        name: 'total_amount',
+        default: 0,
+    }),
     __metadata("design:type", Number)
 ], Order.prototype, "totalAmount", void 0);
 __decorate([
@@ -66,7 +71,7 @@ __decorate([
     __metadata("design:type", String)
 ], Order.prototype, "status", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ name: 'shipping_address' }),
     __metadata("design:type", String)
 ], Order.prototype, "shippingAddress", void 0);
 __decorate([
@@ -74,30 +79,30 @@ __decorate([
     __metadata("design:type", String)
 ], Order.prototype, "notes", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ default: false }),
+    (0, typeorm_1.Column)({ name: 'gift_wrap', default: false }),
     __metadata("design:type", Boolean)
 ], Order.prototype, "giftWrap", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ nullable: true }),
+    (0, typeorm_1.Column)({ name: 'gift_message', nullable: true }),
     __metadata("design:type", String)
 ], Order.prototype, "giftMessage", void 0);
 __decorate([
-    (0, typeorm_1.CreateDateColumn)(),
+    (0, typeorm_1.CreateDateColumn)({ name: 'created_at' }),
     __metadata("design:type", Date)
 ], Order.prototype, "createdAt", void 0);
 __decorate([
-    (0, typeorm_1.UpdateDateColumn)(),
+    (0, typeorm_1.UpdateDateColumn)({ name: 'updated_at' }),
     __metadata("design:type", Date)
 ], Order.prototype, "updatedAt", void 0);
 exports.Order = Order = __decorate([
-    (0, typeorm_1.Entity)('orders')
+    (0, typeorm_1.Entity)({ name: 'orders' })
 ], Order);
 let OrderItem = class OrderItem {
     id;
-    order;
     orderId;
-    product;
+    order;
     productId;
+    product;
     quantity;
     priceAtPurchase;
     engravingText;
@@ -110,44 +115,48 @@ __decorate([
     __metadata("design:type", Number)
 ], OrderItem.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => Order, (order) => order.items, { onDelete: 'CASCADE' }),
-    (0, typeorm_1.JoinColumn)({ name: 'orderId' }),
-    __metadata("design:type", Order)
-], OrderItem.prototype, "order", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ name: 'order_id' }),
     __metadata("design:type", Number)
 ], OrderItem.prototype, "orderId", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => product_entity_1.Product),
-    (0, typeorm_1.JoinColumn)({ name: 'productId' }),
+    (0, typeorm_1.ManyToOne)(() => Order, (order) => order.items, { onDelete: 'CASCADE' }),
+    (0, typeorm_1.JoinColumn)({ name: 'order_id' }),
+    __metadata("design:type", Order)
+], OrderItem.prototype, "order", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ name: 'product_id' }),
+    __metadata("design:type", Number)
+], OrderItem.prototype, "productId", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => product_entity_1.Product, { onDelete: 'RESTRICT' }),
+    (0, typeorm_1.JoinColumn)({ name: 'product_id' }),
     __metadata("design:type", product_entity_1.Product)
 ], OrderItem.prototype, "product", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
-], OrderItem.prototype, "productId", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
 ], OrderItem.prototype, "quantity", void 0);
 __decorate([
-    (0, typeorm_1.Column)('decimal', { precision: 10, scale: 2 }),
+    (0, typeorm_1.Column)('decimal', {
+        precision: 10,
+        scale: 2,
+        name: 'price_at_purchase',
+    }),
     __metadata("design:type", Number)
 ], OrderItem.prototype, "priceAtPurchase", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ nullable: true }),
+    (0, typeorm_1.Column)({ name: 'engraving_text', nullable: true }),
     __metadata("design:type", String)
 ], OrderItem.prototype, "engravingText", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ nullable: true }),
+    (0, typeorm_1.Column)({ name: 'ring_size', nullable: true }),
     __metadata("design:type", String)
 ], OrderItem.prototype, "ringSize", void 0);
 __decorate([
-    (0, typeorm_1.CreateDateColumn)(),
+    (0, typeorm_1.CreateDateColumn)({ name: 'created_at' }),
     __metadata("design:type", Date)
 ], OrderItem.prototype, "createdAt", void 0);
 exports.OrderItem = OrderItem = __decorate([
-    (0, typeorm_1.Entity)('order_items')
+    (0, typeorm_1.Entity)({ name: 'order_items' })
 ], OrderItem);
 //# sourceMappingURL=order.entity.js.map

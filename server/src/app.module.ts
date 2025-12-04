@@ -21,10 +21,11 @@ import { OrdersModule } from './orders/order.module';
         host: config.get('DB_HOST', 'localhost'),
         port: config.get('DB_PORT', 5432),
         username: config.get('DB_USERNAME', 'postgres'),
-        password: config.get('DB_PASSWORD', 'postgres'),
-        database: config.get('DB_NAME', 'jewelry_shop'),
+        password: config.get('DB_PASSWORD', '1234'),
+        database: config.get('DB_NAME', 'postgres'),
+        schema: 'shop',
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        synchronize: true, // ⚠️ רק לפיתוח! בפרודקשן להשתמש במיגרציות
+        synchronize: false, // ⚠️ רק לפיתוח! בפרודקשן להשתמש במיגרציות
         logging: false,
       }),
     }),

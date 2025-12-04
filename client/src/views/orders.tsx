@@ -50,7 +50,7 @@ export const Orders: FC = () => {
         <Typography variant="h4" gutterBottom>
           אין הזמנות
         </Typography>
-        <Button variant="contained" onClick={() => navigate("/products")}>
+        <Button variant="contained" onClick={() => navigate("/")}>
           התחל לקנות
         </Button>
       </Container>

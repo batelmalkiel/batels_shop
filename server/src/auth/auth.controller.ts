@@ -45,7 +45,7 @@ export class AuthController {
     const result = await this.authService.googleLogin(req.user);
     
     // מפנה חזרה לאפליקציה עם הטוקן
-    res.redirect(`http://localhost:3000/auth/callback?token=${result.token}`);
+    res.redirect(`http://localhost:5173/auth/callback?token=${result.token}`);
   }
 
   @Get('profile')

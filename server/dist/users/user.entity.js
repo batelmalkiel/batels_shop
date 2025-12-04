@@ -43,11 +43,11 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "password", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ name: 'first_name' }),
     __metadata("design:type", String)
 ], User.prototype, "firstName", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ name: 'last_name' }),
     __metadata("design:type", String)
 ], User.prototype, "lastName", void 0);
 __decorate([
@@ -63,11 +63,11 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "provider", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ nullable: true }),
+    (0, typeorm_1.Column)({ name: 'google_id', nullable: true }),
     __metadata("design:type", String)
 ], User.prototype, "googleId", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ nullable: true }),
+    (0, typeorm_1.Column)({ name: 'profile_picture', nullable: true }),
     __metadata("design:type", String)
 ], User.prototype, "profilePicture", void 0);
 __decorate([
@@ -75,14 +75,14 @@ __decorate([
     __metadata("design:type", Array)
 ], User.prototype, "orders", void 0);
 __decorate([
-    (0, typeorm_1.CreateDateColumn)(),
+    (0, typeorm_1.CreateDateColumn)({ name: 'created_at' }),
     __metadata("design:type", Date)
 ], User.prototype, "createdAt", void 0);
 __decorate([
-    (0, typeorm_1.UpdateDateColumn)(),
+    (0, typeorm_1.UpdateDateColumn)({ name: 'updated_at' }),
     __metadata("design:type", Date)
 ], User.prototype, "updatedAt", void 0);
 exports.User = User = __decorate([
-    (0, typeorm_1.Entity)('users')
+    (0, typeorm_1.Entity)({ name: 'users' })
 ], User);
 //# sourceMappingURL=user.entity.js.map

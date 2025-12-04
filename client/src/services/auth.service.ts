@@ -43,7 +43,14 @@ class AuthService {
 
   // כניסה עם Google
   googleLogin(): void {
-    window.location.href = `${api.defaults.baseURL}/auth/google`;
+    window.location.href = `http://localhost:3001/auth/google`;
+  }
+
+  // טיפול בהחזרה מ-Google (callback)
+  async handleGoogleCallback(token: string): Promise<AuthResponse> {
+    this.saveToken(token);
+    const response = await this.getProfile();
+    return response;
   }
 
   // קבלת פרופיל משתמש

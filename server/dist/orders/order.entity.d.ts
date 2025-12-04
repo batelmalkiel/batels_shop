@@ -9,8 +9,8 @@ export declare enum OrderStatus {
 }
 export declare class Order {
     id: number;
-    user: User;
     userId: number;
+    user: User;
     items: OrderItem[];
     totalAmount: number;
     status: OrderStatus;
@@ -23,10 +23,10 @@ export declare class Order {
 }
 export declare class OrderItem {
     id: number;
-    order: Order;
     orderId: number;
-    product: Product;
+    order: Order;
     productId: number;
+    product: Product;
     quantity: number;
     priceAtPurchase: number;
     engravingText: string;

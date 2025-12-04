@@ -26,7 +26,6 @@ export enum StoneType {
   AQUAMARINE = 'aquamarine',
   NONE = 'none',
 }
-
 @Entity('products')
 export class Product {
   @PrimaryGeneratedColumn()
@@ -42,44 +41,55 @@ export class Product {
   price: number;
 
   @Column()
-  category: string; // טבעות אירוסין, שרשראות, עגילים, צמידים
+  category: string;
 
   @Column({
+    name: 'metal_type',
     type: 'enum',
     enum: MetalType,
-    default: MetalType.GOLD,
   })
   metalType: MetalType;
 
-  @Column('decimal', { precision: 6, scale: 2, nullable: true })
-  metalWeight: number; // גרמים
+  @Column('decimal', {
+    name: 'metal_weight',
+    precision: 6,
+    scale: 2,
+    nullable: true,
+  })
+  metalWeight: number;
 
   @Column({
+    name: 'stone_type',
     type: 'enum',
     enum: StoneType,
     default: StoneType.NONE,
   })
   stoneType: StoneType;
 
-  @Column('decimal', { precision: 6, scale: 2, nullable: true })
-  stoneCarat: number; // קראט
+  @Column('decimal', {
+    name: 'stone_carat',
+    precision: 6,
+    scale: 2,
+    nullable: true,
+  })
+  stoneCarat: number;
 
-  @Column({ nullable: true })
-  stoneClarity: string; // VVS, VS, SI
+  @Column({ name: 'stone_clarity', nullable: true })
+  stoneClarity: string;
 
-  @Column({ nullable: true })
-  stoneColor: string; // D, E, F, G
+  @Column({ name: 'stone_color', nullable: true })
+  stoneColor: string;
 
-  @Column()
+  @Column({ name: 'image_url' })
   imageUrl: string;
 
-  @Column({ default: 0 })
+  @Column({ name: 'stock', default: 0 })
   stock: number;
 
-  @Column({ default: true })
+  @Column({ name: 'is_active', default: true })
   isActive: boolean;
 
-  @Column({ default: false })
+  @Column({ name: 'is_custom_made', default: false })
   isCustomMade: boolean;
 
   @Column({ nullable: true })
@@ -88,9 +98,9 @@ export class Product {
   @Column('simple-array', { nullable: true })
   tags: string[];
 
-  @CreateDateColumn()
+  @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 }

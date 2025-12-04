@@ -32,7 +32,7 @@ export const Cart: FC = () => {
         <Typography variant="h4" gutterBottom>
           העגלה ריקה
         </Typography>
-        <Button variant="contained" onClick={() => navigate("/products")}>
+        <Button variant="contained" onClick={() => navigate("/")}>
           חזור לקניות
         </Button>
       </Container>

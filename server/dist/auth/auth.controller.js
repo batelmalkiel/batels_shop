@@ -50,7 +50,7 @@ let AuthController = class AuthController {
     }
     async googleAuthCallback(req, res) {
         const result = await this.authService.googleLogin(req.user);
-        res.redirect(`http://localhost:3000/auth/callback?token=${result.token}`);
+        res.redirect(`http://localhost:5173/auth/callback?token=${result.token}`);
     }
     async getProfile(user) {
         return {

@@ -9,7 +9,7 @@ import {
 import { Exclude } from 'class-transformer';
 import { Order } from '../orders/order.entity';
 
-@Entity('users')
+@Entity({ name: 'users' })
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
@@ -21,10 +21,10 @@ export class User {
   @Exclude()
   password: string;
 
-  @Column()
+  @Column({ name: 'first_name' })
   firstName: string;
 
-  @Column()
+  @Column({ name: 'last_name' })
   lastName: string;
 
   @Column({ nullable: true })
@@ -34,20 +34,20 @@ export class User {
   address: string;
 
   @Column({ default: 'local' })
-  provider: string; // 'local' or 'google'
+  provider: string;
 
-  @Column({ nullable: true })
+  @Column({ name: 'google_id', nullable: true })
   googleId: string;
 
-  @Column({ nullable: true })
+  @Column({ name: 'profile_picture', nullable: true })
   profilePicture: string;
 
   @OneToMany(() => Order, (order) => order.user)
   orders: Order[];
 
-  @CreateDateColumn()
+  @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 }
