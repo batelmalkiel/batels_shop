@@ -94,10 +94,11 @@ let AuthService = class AuthService {
         let user = await this.usersRepository.findOne({
             where: { googleId: profile.id }
         });
+        console.log('Google profile:', profile);
+        console.log("email:", profile.email);
         if (!user) {
-            console.log('Google profile:', profile);
             user = await this.usersRepository.findOne({
-                where: { email: profile.emails[0].value }
+                where: { email: profile.email }
             });
             if (user) {
                 user.googleId = profile.id;
@@ -106,12 +107,12 @@ let AuthService = class AuthService {
             }
             else {
                 user = this.usersRepository.create({
-                    email: profile.emails[0].value,
-                    firstName: profile.name.givenName,
-                    lastName: profile.name.familyName,
+                    email: profile.email,
+                    firstName: profile.firstName,
+                    lastName: profile.lastName,
                     googleId: profile.id,
                     provider: 'google',
-                    profilePicture: profile.photos?.[0]?.value
+                    profilePicture: profile.picture
                 });
                 await this.usersRepository.save(user);
             }

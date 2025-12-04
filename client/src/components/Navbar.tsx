@@ -12,7 +12,7 @@ import { useAuth } from '../context/AuthContext';
 
 export const Navbar: React.FC = () => {
   const navigate = useNavigate();
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, logout, user } = useAuth();
 
   return (
     <AppBar 
@@ -59,6 +59,7 @@ export const Navbar: React.FC = () => {
 
 
           {isAuthenticated ? 
+          <>
           <Button 
           color="inherit" 
           onClick={() => logout()}
@@ -70,7 +71,25 @@ export const Navbar: React.FC = () => {
           }}
         >
              {"התנתקות"}
-            </Button> :
+            </Button>
+
+            <Typography
+          variant="h5"
+          component="div"
+          sx={{ 
+            flexGrow: 1, 
+            cursor: 'pointer',
+            fontWeight: 'bold',
+            background: 'linear-gradient(45deg, #FFD700, #FFF)',
+            backgroundClip: 'text',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+          }}
+        >
+          שלום, {user?.firstName}
+        </Typography>
+            </>
+             :
             <>
 
             <Button 
