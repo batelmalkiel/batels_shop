@@ -4,28 +4,15 @@ import {
   Toolbar,
   Typography,
   Button,
-  IconButton,
 } from '@mui/material';
-import {
-  Diamond,
-} from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-
 import { routes, Page } from "../router/paths";
+import { useAuth } from '../context/AuthContext';
 
 
 export const Navbar: React.FC = () => {
   const navigate = useNavigate();
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-
-  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
+  const { isAuthenticated, logout } = useAuth();
 
   return (
     <AppBar 
@@ -69,6 +56,48 @@ export const Navbar: React.FC = () => {
              {route.name}
             </Button>
           ))}
+
+
+          {isAuthenticated ? 
+          <Button 
+          color="inherit" 
+          onClick={() => logout()}
+          sx={{ 
+            '&:hover': { 
+              color: '#FFD700',
+              transform: 'scale(1.05)'
+            }
+          }}
+        >
+             {"התנתקות"}
+            </Button> :
+            <>
+
+            <Button 
+          color="inherit" 
+          onClick={() => navigate("/login")}
+          sx={{ 
+            '&:hover': { 
+              color: '#FFD700',
+              transform: 'scale(1.05)'
+            }
+          }}
+        >
+             {"התחברות"}
+            </Button>
+             <Button 
+          color="inherit" 
+          onClick={() => navigate("/register")}
+          sx={{ 
+            '&:hover': { 
+              color: '#FFD700',
+              transform: 'scale(1.05)'
+            }
+          }}
+        >
+             {"הרשמה"}
+            </Button>
+            </>}
       </Toolbar>
     </AppBar>
   );
