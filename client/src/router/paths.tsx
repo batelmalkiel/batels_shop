@@ -1,44 +1,85 @@
-// import { EditConvoy } from "../views/EditConvoy";
-// import { Home } from "../views/Home";
-// import { Map } from "../views/Map";
+// src/router/paths.tsx
+import { Home } from "../views/home";
+import { Cart } from "../views/cart";
+import { Checkout } from "../views/checkout";
+import { Orders } from "../views/orders";
+import { OrderDetail } from "../views/OrderDetail";
+import { Login } from "../views/login";
+import { Register } from "../views/register";
+import { GoogleCallback } from "../views/GoogleCallback";
+import { Layout } from "../views/Layout";
 
-// import Layout from "../views/Layout";
 
-// export interface Page {
-//   path: string;
-//   element: JSX.Element;
-//   name: string;
-//   isShown: boolean;
-// }
 
-// export const routes: Page[] = [
-//   {
-//     path: "/",
-//     element: <Home />,
-//     name: "בית",
-//     isShown: true,
-//   },
-//   {
-//     path: "/map",
-//     element: <Map />,
-//     name: "מפה",
-//     isShown: true,
-//   },
-//   {
-//     path: "/edit",
-//     element: <EditConvoy />,
-//     name: "Edit",
-//     isShown: false,
-//   },
-// ];
+export interface Page {
+  path: string;
+  element: JSX.Element;
+  name: string;
+  isShown: boolean;
+  requiresAuth?: boolean;
+}
 
-// export const paths = [
-//   {
-//     path: "/",
-//     element: <Layout />,
-//     children: routes.map((route) => ({
-//       path: route.path,
-//       element: route.element,
-//     })),
-//   },
-// ];
+export const routes: Page[] = [
+  {
+    path: "/",
+    element: <Home />,
+    name: "בית",
+    isShown: true,
+  },
+  {
+    path: "/cart",
+    element: <Cart />,
+    name: "עגלה",
+    isShown: true,
+  },
+  {
+    path: "/orders",
+    element: <Orders />,
+    name: "ההזמנות שלי",
+    isShown: true,
+    requiresAuth: true,
+  },
+  {
+    path: "/checkout",
+    element: <Checkout />,
+    name: "תשלום",
+    isShown: false,
+    requiresAuth: true,
+  },
+  {
+    path: "/orders/:id",
+    element: <OrderDetail />,
+    name: "פרטי הזמנה",
+    isShown: false,
+    requiresAuth: true,
+  },
+  {
+    path: "/login",
+    element: <Login />,
+    name: "התחבר",
+    isShown: false,
+  },
+  {
+    path: "/register",
+    element: <Register />,
+    name: "הירשם",
+    isShown: false,
+  },
+  {
+    path: "/auth/callback",
+    element: <GoogleCallback />,
+    name: "Google Callback",
+    isShown: false,
+  },
+];
+
+export const paths = [
+  {
+    path: "/",
+    element: <Layout />,
+    children: routes.map((route) => ({
+      path: route.path,
+      element: route.element,
+    })),
+  },
+];
