@@ -1,5 +1,5 @@
 // src/router/paths.tsx
-import { Home } from "../views/Home";
+import { Home } from "../views/home";
 import { Cart } from "../views/cart";
 import { Checkout } from "../views/checkout";
 import { Orders } from "../views/orders";
