@@ -22,6 +22,10 @@ export class JwtAuthStrategy extends PassportStrategy(Strategy, 'jwt') {
     if (!user) {
       throw new UnauthorizedException('משתמש לא נמצא');
     }
-    return user;
+    return {
+    id: user.id,
+    email: user.email,
+    role: user.role,
+  };
   }
 }

@@ -10,6 +10,8 @@ import { AuthService } from './auth.service';
 import { User } from '../users/user.entity';
 import { JwtAuthStrategy } from './strategies/jwt.strategy';
 import { GoogleAuthStrategy } from './strategies/google.strategy';
+import { RolesGuard } from './guards/roles.guard';
+import { AdminGuard } from './guards/admin.guard';
 
 @Module({
   imports: [
@@ -28,7 +30,7 @@ import { GoogleAuthStrategy } from './strategies/google.strategy';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtAuthStrategy, GoogleAuthStrategy],
+  providers: [AuthService, JwtAuthStrategy, GoogleAuthStrategy, RolesGuard, AdminGuard],
   exports: [AuthService],
 })
 export class AuthModule {}
