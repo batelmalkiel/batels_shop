@@ -1,12 +1,12 @@
 # Dependencies
-node_modules/
+node_modules
 
 # Build output
-dist/
+dist
 build/
 
 # Vite
-.vite/
+.vite
 
 # Environment variables
 .env
