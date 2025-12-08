@@ -2,7 +2,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import authService from '../services/auth.service';
 import { User } from '../types/user.types';
-import { useAtom } from "jotai";
+import { useSetAtom } from "jotai";
 import { isAdminAtom } from '../atoms/isAdminAtom';
 
 interface AuthContextType {
@@ -21,7 +21,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-    const [isAdmin, setIsAdmin] = useAtom(isAdminAtom);
+    const setIsAdmin = useSetAtom(isAdminAtom);
   
 
   useEffect(() => {

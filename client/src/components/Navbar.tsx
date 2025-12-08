@@ -8,18 +8,19 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { routes, Page } from "../router/paths";
 import { useAuth } from '../context/AuthContext';
-import { useAtom } from "jotai";
+import { useAtomValue } from "jotai";
 import { isAdminAtom } from '../atoms/isAdminAtom';
 import LogoutIcon from '@mui/icons-material/Logout';
 import LoginIcon from '@mui/icons-material/Login';
 import AddToQueueIcon from '@mui/icons-material/AddToQueue';
+import DiamondIcon from '@mui/icons-material/Diamond';
 
 
 
 export const Navbar: React.FC = () => {
   const navigate = useNavigate();
   const { isAuthenticated, logout, user } = useAuth();
-  const [isAdmin, setIsAdmin] = useAtom(isAdminAtom);
+  const isAdmin = useAtomValue(isAdminAtom)
   
  
 
@@ -36,7 +37,9 @@ export const Navbar: React.FC = () => {
         <Typography
           variant="h5"
           component="div"
+          onClick={() => navigate("/")}
           sx={{ 
+            color: '#FFD700',
             flexGrow: 1, 
             cursor: 'pointer',
             fontWeight: 'bold',
@@ -46,7 +49,8 @@ export const Navbar: React.FC = () => {
             WebkitTextFillColor: 'transparent',
           }}
         >
-          Luxury Jewelry!
+          Luxury Jewelry
+          <DiamondIcon sx={{color: '#FFD700'}} />
         </Typography>
 
           {routes
@@ -97,22 +101,6 @@ export const Navbar: React.FC = () => {
              {"התנתקות"}
              <LogoutIcon/>
             </Button>
-
-            <Typography
-          variant="h5"
-          component="div"
-          sx={{ 
-            flexGrow: 1, 
-            cursor: 'pointer',
-            fontWeight: 'bold',
-            background: 'linear-gradient(45deg, #FFD700, #FFF)',
-            backgroundClip: 'text',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-          }}
-        >
-          שלום, {user?.firstName}
-        </Typography>
             </>
              :
             <>

@@ -11,20 +11,12 @@ import {
 import { Delete, Add, Remove } from "@mui/icons-material";
 import { useCart } from "../context/CartContext";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
-import { useAtom, useAtomValue, useSetAtom } from "jotai";
-//import { isAdminAtom } from "src/atoms/isAdminAtom";
+import { useAuth } from "../context/AuthContext";;
 
 export const Cart: FC = () => {
   const { items, removeItem, updateQuantity, totalPrice, totalItems } = useCart();
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
-
-  // const [isAdmin, setIsAdmin] = useAtom(isAdminAtom);
-
-  //const isAdmin = useAtomValue(isAdminAtom)
-  //const setIsAdmin = useSetAtom(isAdminAtom)
-
 
   const handleCheckout = () => {
     if (!isAuthenticated) {
