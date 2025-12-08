@@ -52,7 +52,7 @@ export class OrdersController {
   async findOne(@Param('id') id: number, @CurrentUser() user: User) {
     const order = await this.ordersService.findOne(id);
     // וידוא שהמשתמש מורשה לראות את ההזמנה
-    if (order.userId !== user.id) {
+    if (user.role!="admin" && order.userId !== user.id) {
       throw new Error('אין לך הרשאה לצפות בהזמנה זו');
     }
 
