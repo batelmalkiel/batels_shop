@@ -76,7 +76,7 @@ export const routes: Page[] = [
     path: "/orders/admin",
     element: <AdminAllOrders/>,
     name: "כלל ההזמנות במערכת",
-    isShown: true
+    isShown: false
   },
 ];
 

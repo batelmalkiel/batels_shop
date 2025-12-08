@@ -45,7 +45,6 @@ class ProductsService {
         if (key === 'image' && value instanceof File) {
           // Ensure the key is 'image' for FileInterceptor
           formData.append('image', value);
-          console.log('✅ Added image file:', value.name, value.type, value.size);
         } else if (Array.isArray(value)) {
           // For arrays, append each item separately with the same key
           // This is how multipart/form-data handles arrays
@@ -57,25 +56,16 @@ class ProductsService {
               formData.append(`${key}[]`, String(item));
             });
           }
-          console.log(`✅ Added array ${key}:`, value);
         } else {
           formData.append(key, String(value));
-          console.log(`✅ Added ${key}:`, value);
         }
       }
-    }
-
-    // Debug: Log all FormData entries
-    console.log('📦 FormData contents:');
-    for (let pair of formData.entries()) {
-      console.log(`  ${pair[0]}:`, pair[1]);
     }
 
     return formData;
   }
 
   async create(productData: any): Promise<Product> {
-    console.log('🔧 Creating product with data:', productData);
     const formData = this.buildFormData(productData);
     
     const response = await api.post<Product>('/products', formData, {
@@ -86,7 +76,6 @@ class ProductsService {
   }
 
   async update(id: number, productData: any): Promise<Product> {
-    console.log('🔧 Updating product with data:', productData);
     const formData = this.buildFormData(productData);
 
     const response = await api.put<Product>(`/products/${id}`, formData, {

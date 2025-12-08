@@ -10,6 +10,7 @@ import { Repository } from 'typeorm';
 import { Order, OrderItem, OrderStatus } from './order.entity';
 import { ProductsService } from '../products/products.service';
 import { CreateOrderDto } from './dto/create-order.dto';
+import { UpdateOrderStatusDto } from './dto/update-order-status.dto';
 
 @Injectable()
 export class OrdersService {
@@ -139,5 +140,12 @@ export class OrdersService {
       relations: ['items', 'items.product'],
       order: { createdAt: 'DESC' },
     });
+  }
+
+  async update(id: number, orderDto: OrderStatus): Promise<Order> {
+    const order = await this.ordersRepository.findOne({where:{id}});
+    if (!order) throw new NotFoundException('Order not found');
+    order.status = orderDto;
+    return this.ordersRepository.save(order);
   }
 }

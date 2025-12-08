@@ -128,6 +128,6 @@ export class ProductsController {
   @Roles('admin')
   @Delete(':id')
   async remove(@Param('id') id: number) {
-    return this.productsService.remove(id);
+    return this.productsService.unActive(id);
   }
 }

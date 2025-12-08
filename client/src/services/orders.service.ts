@@ -1,5 +1,5 @@
 import api from './api';
-import { Order, CreateOrderData, OrderResponse } from '../types/order.types';
+import { Order, CreateOrderData, OrderResponse, OrderStatus } from '../types/order.types';
 
 class OrdersService {
   // יצירת הזמנה חדשה
@@ -27,21 +27,26 @@ class OrdersService {
     return response.data.order;
   }
 
-  // עדכון סטטוס הזמנה
-  async updateStatus(id: number, status: string): Promise<Order> {
-    const response = await api.patch<{ order: Order }>(
-      `/orders/${id}/status`, 
-      { status }
-    );
-    return response.data.order;
-  }
-
   // ביטול הזמנה
   async cancel(id: number): Promise<Order> {
     const response = await api.patch<{ order: Order }>(`/orders/${id}/cancel`);
     return response.data.order;
   }
 
+  //Admin
+  // async update(id: number, order: Order): Promise<Order> {
+  //   const response = await api.put<Order>(`/orders/${id}`, order);
+
+  //   return response.data;
+  // }
+    // עדכון סטטוס הזמנה
+  async updateStatus(id: number, status: OrderStatus): Promise<Order> {
+    const response = await api.patch<{ order: Order }>(
+      `/orders/${id}/status`, 
+      { status }
+    );
+    return response.data.order;
+  }
 
   
 }

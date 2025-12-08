@@ -1,3 +1,3 @@
-import {atom} from 'jotai'
+import { atom } from 'jotai'
 
-export const isAdminAtom = atom<boolean>(false);
+export const isAdminAtom = atom(false);

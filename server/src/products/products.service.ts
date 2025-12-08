@@ -152,15 +152,21 @@ export class ProductsService {
   return this.productsRepository.save(product);
   }
 
-async update(id: number, productDto: UpdateProductDto): Promise<Product> {
-  const product = await this.findOne(id);
-  Object.assign(product, productDto);
-  return this.productsRepository.save(product);
+  async update(id: number, productDto: UpdateProductDto): Promise<Product> {
+    const product = await this.findOne(id);
+    Object.assign(product, productDto);
+    return this.productsRepository.save(product);
   }
 
   async remove(id: number): Promise<{ message: string }> {
     const product = await this.findOne(id);
     await this.productsRepository.remove(product);
     return { message: 'המוצר נמחק בהצלחה' };
+  }
+
+  async unActive (id:number): Promise<Product> {
+    const product = await this.findOne(id);
+    product.isActive = false;
+    return this.productsRepository.save(product);
   }
 }
