@@ -8,6 +8,13 @@ class OrdersService {
     return response.data;
   }
 
+  //Admin
+  // קבלת כל ההזמנות
+  async getAllAdmin(): Promise<Order[]> {
+    const response = await api.get<{ orders: Order[] }>('/orders/admin');
+    return response.data.orders;
+  }
+
   // קבלת כל ההזמנות של המשתמש
   async getAll(): Promise<Order[]> {
     const response = await api.get<{ orders: Order[] }>('/orders');
@@ -34,6 +41,9 @@ class OrdersService {
     const response = await api.patch<{ order: Order }>(`/orders/${id}/cancel`);
     return response.data.order;
   }
+
+
+  
 }
 
 export default new OrdersService();

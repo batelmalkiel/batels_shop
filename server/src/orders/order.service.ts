@@ -132,4 +132,12 @@ export class OrdersService {
 
     return this.updateStatus(id, OrderStatus.CANCELLED, userId);
   }
+
+  //Admin
+  async findAllAdmin(): Promise<Order[]> {
+    return this.ordersRepository.find({
+      relations: ['items', 'items.product'],
+      order: { createdAt: 'DESC' },
+    });
+  }
 }

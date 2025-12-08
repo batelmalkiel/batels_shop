@@ -28,7 +28,7 @@ const statusColors: any = {
   cancelled: "error",
 };
 
-export const Orders: FC = () => {
+export const AdminAllOrders: FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const navigate = useNavigate();
 
@@ -38,7 +38,7 @@ export const Orders: FC = () => {
 
   const fetchOrders = async () => {
     try {
-      const data = await ordersService.getAll();
+      const data = await ordersService.getAllAdmin();
       setOrders(data);
     } catch (error) {
       console.error("Error:", error);
@@ -52,7 +52,7 @@ export const Orders: FC = () => {
           אין הזמנות
         </Typography>
         <Button variant="contained" onClick={() => navigate("/")}>
-          התחל לקנות
+            חזור לדף הבית
         </Button>
       </Container>
     );
@@ -60,7 +60,7 @@ export const Orders: FC = () => {
 
   return (
     <OrdersList
-      title="ההזמנות שלי"
+      title="כלל ההזמנות באתר"
       orders={orders}
     />
   );

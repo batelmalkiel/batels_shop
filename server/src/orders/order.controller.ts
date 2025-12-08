@@ -13,6 +13,8 @@ import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { OrderStatus } from './order.entity';
 import { User } from '../users/user.entity';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Roles } from 'src/auth/decorators/roles.decorator';
 
 @Controller('orders')
 @UseGuards(JwtAuthGuard)
@@ -34,6 +36,15 @@ export class OrdersController {
   @Get()
   async findAll(@CurrentUser() user: User) {
     const orders = await this.ordersService.findAll(user.id);
+    return { orders };
+  }
+
+  //Admin
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  @Get('/admin')
+  async findAllAdmin() {
+    const orders = await this.ordersService.findAllAdmin();
     return { orders };
   }
 
@@ -69,4 +80,6 @@ export class OrdersController {
       order,
     };
   }
+
+  
 }
