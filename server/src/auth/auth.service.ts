@@ -70,9 +70,6 @@ export class AuthService {
       where: { googleId: profile.id }
     });
 
-    console.log('Google profile:', profile);
-    console.log("email:", profile.email)
-
     if (!user) {
 
       user = await this.usersRepository.findOne({

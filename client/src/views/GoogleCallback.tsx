@@ -7,7 +7,7 @@ import authService from "../services/auth.service";
 export const GoogleCallback: FC = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, setUser } = useAuth();
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -23,8 +23,8 @@ export const GoogleCallback: FC = () => {
 
       try {
         // שמירת ה-token וטעינת פרופיל המשתמש
-        await authService.handleGoogleCallback(token);
-        
+        const response = await authService.handleGoogleCallback(token);
+        setUser(response.user);
         // ניווט לעמוד הבית
         navigate("/");
       } catch (err: any) {
