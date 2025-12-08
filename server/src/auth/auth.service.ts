@@ -70,9 +70,6 @@ export class AuthService {
       where: { googleId: profile.id }
     });
 
-    console.log('Google profile:', profile);
-    console.log("email:", profile.email)
-
     if (!user) {
 
       user = await this.usersRepository.findOne({
@@ -106,7 +103,7 @@ export class AuthService {
   }
 
   private generateToken(user: User): string {
-    const payload = { sub: user.id, email: user.email };
+    const payload = { sub: user.id, email: user.email, role: user.role };
     return this.jwtService.sign(payload);
   }
 }

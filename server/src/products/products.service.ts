@@ -3,6 +3,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Product, MetalType, StoneType } from './product.entity';
+import { CreateProductDto } from './dto/create-product.dto';
+import { UpdateProductDto } from './dto/update-product.dto';
 
 export interface ProductFilters {
   category?: string;
@@ -142,5 +144,23 @@ export class ProductsService {
     const product = await this.findOne(id);
     product.stock = quantity;
     return this.productsRepository.save(product);
+  }
+
+  //Admin CRUD
+  async create(productDto: CreateProductDto): Promise<Product> {
+  const product = this.productsRepository.create(productDto);
+  return this.productsRepository.save(product);
+  }
+
+async update(id: number, productDto: UpdateProductDto): Promise<Product> {
+  const product = await this.findOne(id);
+  Object.assign(product, productDto);
+  return this.productsRepository.save(product);
+  }
+
+  async remove(id: number): Promise<{ message: string }> {
+    const product = await this.findOne(id);
+    await this.productsRepository.remove(product);
+    return { message: 'המוצר נמחק בהצלחה' };
   }
 }

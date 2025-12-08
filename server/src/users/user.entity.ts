@@ -33,6 +33,9 @@ export class User {
   @Column({ nullable: true })
   address: string;
 
+  @Column({default: 'user'})
+  role: string
+
   @Column({ default: 'local' })
   provider: string;
 

@@ -37,6 +37,7 @@ CREATE TABLE shop.users (
     last_name VARCHAR(100) NOT NULL,
     phone VARCHAR(20),
     address TEXT,
+    role VARCHAR(100) DEFAULT 'user',
     provider VARCHAR(20) NOT NULL DEFAULT 'local',
     google_id VARCHAR(255) UNIQUE,
     profile_picture TEXT,

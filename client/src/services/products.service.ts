@@ -33,6 +33,72 @@ class ProductsService {
     const response = await api.get<{ metalTypes: string[] }>('/products/metal-types');
     return response.data.metalTypes;
   }
+
+  //Admin methods
+  private buildFormData(productData: any): FormData {
+    const formData = new FormData();
+
+    for (const key in productData) {
+      if (productData[key] !== undefined && productData[key] !== null) {
+        const value = productData[key];
+
+        if (key === 'image' && value instanceof File) {
+          // Ensure the key is 'image' for FileInterceptor
+          formData.append('image', value);
+          console.log('✅ Added image file:', value.name, value.type, value.size);
+        } else if (Array.isArray(value)) {
+          // For arrays, append each item separately with the same key
+          // This is how multipart/form-data handles arrays
+          if (value.length === 0) {
+            // Send empty array as empty string or skip it
+            formData.append(key, '[]');
+          } else {
+            value.forEach((item) => {
+              formData.append(`${key}[]`, String(item));
+            });
+          }
+          console.log(`✅ Added array ${key}:`, value);
+        } else {
+          formData.append(key, String(value));
+          console.log(`✅ Added ${key}:`, value);
+        }
+      }
+    }
+
+    // Debug: Log all FormData entries
+    console.log('📦 FormData contents:');
+    for (let pair of formData.entries()) {
+      console.log(`  ${pair[0]}:`, pair[1]);
+    }
+
+    return formData;
+  }
+
+  async create(productData: any): Promise<Product> {
+    console.log('🔧 Creating product with data:', productData);
+    const formData = this.buildFormData(productData);
+    
+    const response = await api.post<Product>('/products', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+
+    return response.data;
+  }
+
+  async update(id: number, productData: any): Promise<Product> {
+    console.log('🔧 Updating product with data:', productData);
+    const formData = this.buildFormData(productData);
+
+    const response = await api.put<Product>(`/products/${id}`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+
+    return response.data;
+  }
+
+  async delete(id: number): Promise<void> {
+    await api.delete(`/products/${id}`);
+  }
 }
 
 export default new ProductsService();

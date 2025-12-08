@@ -95,9 +95,9 @@ export class Product {
   @Column({ nullable: true })
   collection: string;
 
-  @Column('simple-array', { nullable: true })
+  @Column('text', { array: true, nullable: true, default: [] })
   tags: string[];
-
+  
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
