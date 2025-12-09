@@ -1,8 +1,10 @@
 import { FC, useState, useEffect } from "react";
-import { Container, Typography, Paper, Button, Chip, Box } from "@mui/material";
+import { Container, Typography, Paper, Button, Chip, Box, Menu, MenuItem } from "@mui/material";
 import { useParams, useNavigate } from "react-router-dom";
 import ordersService from "../services/orders.service";
-import { Order } from "../types/order.types";
+import { Order, OrderStatus } from "../types/order.types";
+import { isAdminAtom } from "../atoms/isAdminAtom";
+import { useAtomValue } from "jotai";
 
 const statusLabels: any = {
   pending: "ממתין",
@@ -24,10 +26,28 @@ export const OrderDetail: FC = () => {
   const { id } = useParams<{ id: string }>();
   const [order, setOrder] = useState<Order | null>(null);
   const navigate = useNavigate();
+  const isAdmin = useAtomValue(isAdminAtom)
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
 
   useEffect(() => {
     fetchOrder();
   }, [id]);
+
+
+  const handleOpen = (event: any) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleSelect = async (status: OrderStatus) => {
+    await ordersService.updateStatus(Number(id), status);
+    fetchOrder();
+    handleClose();
+  };
 
   const fetchOrder = async () => {
     try {
@@ -53,18 +73,43 @@ export const OrderDetail: FC = () => {
 
   return (
     <Container sx={{ mt: 4 }}>
-      <Button onClick={() => navigate("/orders")} sx={{ mb: 2 }}>
-        ← חזור
-      </Button>
-
       <Paper sx={{ p: 3 }}>
         <Box sx={{ display: "flex", justifyContent: "space-between", mb: 3 }}>
           <Typography variant="h4">הזמנה #{order.id}</Typography>
+          {isAdmin ?
+          <>
           <Chip
             label={statusLabels[order.status]}
             color={statusColors[order.status]}
             size="medium"
+            onClick={handleOpen}
+            sx={{ cursor: "pointer" }}
           />
+
+          <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+            {Object.keys(statusLabels).map((key) => {
+              const statusKey = key as keyof typeof statusLabels; // Type-safe key
+              const orderStatus = statusKey as OrderStatus; // TypeScript cast
+
+              return (
+                <MenuItem
+                  key={statusKey.toString()}
+                  onClick={() => handleSelect(orderStatus)}
+                >
+                  {statusLabels[statusKey]}
+                </MenuItem>
+              );
+            })}
+          </Menu>
+
+        </> :
+            <Chip
+              label={statusLabels[order.status]}
+              color={statusColors[order.status]}
+              size="medium"
+            />
+        }
+          
         </Box>
 
         <Typography variant="h6" gutterBottom>

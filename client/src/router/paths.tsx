@@ -8,6 +8,7 @@ import { Login } from "../views/login";
 import { Register } from "../views/register";
 import { GoogleCallback } from "../views/GoogleCallback";
 import { Layout } from "../views/Layout";
+import { AdminAllOrders } from "../views/AdminAllOrders";
 
 
 
@@ -70,6 +71,12 @@ export const routes: Page[] = [
     element: <GoogleCallback />,
     name: "Google Callback",
     isShown: false,
+  },
+  {
+    path: "/orders/admin",
+    element: <AdminAllOrders/>,
+    name: "כלל ההזמנות במערכת",
+    isShown: false
   },
 ];
 

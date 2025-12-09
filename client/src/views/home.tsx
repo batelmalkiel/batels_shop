@@ -22,6 +22,9 @@ import {
 import productsService from "../services/products.service";
 import { useCart } from "../context/CartContext";
 import { Product } from "../types/product.types";
+import { isAdminAtom } from "../atoms/isAdminAtom";
+import { useAtom } from "jotai";
+
 
 const emptyProduct: Partial<Product> = {
   name: "",
@@ -48,11 +51,12 @@ export const Home: FC = () => {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
   const { addItem } = useCart();
+  const [isAdmin, setIsAdmin] = useAtom(isAdminAtom);
 
-  const [isAdmin, setIsAdmin] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [formData, setFormData] = useState<any>({});
+  const [sort, setSort] = useState<string>("");
 
   useEffect(() => {
     fetchProducts();
@@ -124,16 +128,13 @@ export const Home: FC = () => {
   };
 
  const handleSubmit = async () => {
-  console.log('🚀 Starting submit with formData:', formData);
   
   const dataToSend: any = {};
 
   Object.entries(formData).forEach(([key, value]) => {
-    console.log(`Processing field ${key}:`, value, typeof value);
     
     // Skip imageUrl field - server will set it from uploaded file
     if (key === 'imageUrl') {
-      console.log('⏭️ Skipping imageUrl field');
       return;
     }
     
@@ -141,7 +142,6 @@ export const Home: FC = () => {
       // Convert number fields from string to number if needed
       if (['price', 'metalWeight', 'stoneCarat', 'stock'].includes(key)) {
         dataToSend[key] = Number(value);
-        console.log(`✅ Added number field ${key}:`, dataToSend[key]);
       } else if (key === 'tags') {
         // Special handling for tags - ensure it's always an array
         if (Array.isArray(value)) {
@@ -153,49 +153,25 @@ export const Home: FC = () => {
           // Empty or invalid - send empty array
           dataToSend[key] = [];
         }
-        console.log(`✅ Added tags as array:`, dataToSend[key]);
       } else if (key === 'image') {
         // Only include image if it's a File
         if (value instanceof File) {
           dataToSend[key] = value;
-          console.log(`✅ Added image file:`, value.name, value.size, value.type);
-        } else {
-          console.log(`⚠️ Image is not a File:`, typeof value, value);
-        }
+        } 
       } else {
         dataToSend[key] = value;
-        console.log(`✅ Added field ${key}:`, value);
       }
     } else {
-      console.log(`⏭️ Skipping ${key} (undefined or null)`);
     }
   });
 
-  console.log('📤 Final dataToSend object:', dataToSend);
-  console.log('📤 Keys in dataToSend:', Object.keys(dataToSend));
-  console.log('📤 Tags in dataToSend:', dataToSend.tags, 'isArray:', Array.isArray(dataToSend.tags));
-  
-  // Check if image exists
-  if (dataToSend.image) {
-    console.log('🖼️ Image details:', {
-      name: dataToSend.image.name,
-      size: dataToSend.image.size,
-      type: dataToSend.image.type,
-      lastModified: dataToSend.image.lastModified
-    });
-  } else {
-    console.log('⚠️ No image in dataToSend');
-  }
-
   try {
     if (editingProduct) {
-      console.log('🔄 Updating product ID:', editingProduct.id);
       await productsService.update(editingProduct.id, dataToSend);
     } else {
-      console.log('➕ Creating new product');
       await productsService.create(dataToSend);
     }
-    console.log('✅ Success!');
+
     setOpenDialog(false);
     fetchProducts();
   } catch (err: any) {
@@ -240,6 +216,21 @@ export const Home: FC = () => {
   };
 
   const systemFields = ["id", "createdAt", "updatedAt"];
+  const sortedProducts = [...products].sort((a, b) => {
+  switch (sort) {
+    case "price_low_high":
+      return a.price - b.price;
+    case "price_high_low":
+      return b.price - a.price;
+    case "name_az":
+      return a.name.localeCompare(b.name, "he");
+    case "name_za":
+      return b.name.localeCompare(a.name, "he");
+    default:
+      return 0;
+  }
+});
+
 
   return (
     <Container sx={{ mt: 4 }}>
@@ -273,6 +264,20 @@ export const Home: FC = () => {
             ))}
           </Select>
         </FormControl>
+        <FormControl sx={{ minWidth: 180 }}>
+          <InputLabel>מיון</InputLabel>
+            <Select
+              value={sort}
+              onChange={(e) => setSort(e.target.value)}
+              label="מיון"
+            >
+              <MenuItem value="">ללא מיון</MenuItem>
+              <MenuItem value="price_low_high">מחיר: נמוך לגבוה</MenuItem>
+              <MenuItem value="price_high_low">מחיר: גבוה לנמוך</MenuItem>
+              <MenuItem value="name_az">א-ת</MenuItem>
+              <MenuItem value="name_za">ת-א</MenuItem>
+            </Select>
+    </FormControl>
         {isAdmin && (
           <Button variant="contained" color="secondary" onClick={handleOpenCreate}>
             + מוצר חדש
@@ -281,7 +286,7 @@ export const Home: FC = () => {
       </Box>
 
       <Grid container spacing={3}>
-        {products.map((product) => (
+        {sortedProducts.map((product) => (
           <Grid item key={product.id} xs={12} sm={6} md={4}>
             <Card>
               <CardMedia
@@ -306,7 +311,9 @@ export const Home: FC = () => {
                   onClick={() => handleAddToCart(product)}
                   disabled={product.stock === 0}
                 >
-                  הוסף לעגלה
+                {product.stock === 0 ? 
+               " אין במלאי כרגע ":
+               " הוסף לעגלה"}
                 </Button>
                 {isAdmin && (
                   <Box sx={{ display: "flex", gap: 1, mt: 1 }}>

@@ -2,6 +2,8 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import authService from '../services/auth.service';
 import { User } from '../types/user.types';
+import { useSetAtom } from "jotai";
+import { isAdminAtom } from '../atoms/isAdminAtom';
 
 interface AuthContextType {
   user: User | null;
@@ -19,6 +21,8 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+    const setIsAdmin = useSetAtom(isAdminAtom);
+  
 
   useEffect(() => {
     checkAuth();
@@ -52,6 +56,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logout = () => {
     authService.logout();
     setUser(null);
+    setIsAdmin(false);
+    
   };
 
   const googleLogin = () => {

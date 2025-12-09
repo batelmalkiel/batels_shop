@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   AppBar,
   Toolbar,
@@ -8,11 +8,21 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { routes, Page } from "../router/paths";
 import { useAuth } from '../context/AuthContext';
+import { useAtomValue } from "jotai";
+import { isAdminAtom } from '../atoms/isAdminAtom';
+import LogoutIcon from '@mui/icons-material/Logout';
+import LoginIcon from '@mui/icons-material/Login';
+import AddToQueueIcon from '@mui/icons-material/AddToQueue';
+import DiamondIcon from '@mui/icons-material/Diamond';
+
 
 
 export const Navbar: React.FC = () => {
   const navigate = useNavigate();
   const { isAuthenticated, logout, user } = useAuth();
+  const isAdmin = useAtomValue(isAdminAtom)
+  
+ 
 
   return (
     <AppBar 
@@ -27,7 +37,9 @@ export const Navbar: React.FC = () => {
         <Typography
           variant="h5"
           component="div"
+          onClick={() => navigate("/")}
           sx={{ 
+            color: '#FFD700',
             flexGrow: 1, 
             cursor: 'pointer',
             fontWeight: 'bold',
@@ -37,7 +49,8 @@ export const Navbar: React.FC = () => {
             WebkitTextFillColor: 'transparent',
           }}
         >
-          Luxury Jewelry!
+          Luxury Jewelry
+          <DiamondIcon sx={{color: '#FFD700'}} />
         </Typography>
 
           {routes
@@ -57,12 +70,27 @@ export const Navbar: React.FC = () => {
             </Button>
           ))}
 
+          {isAdmin==true &&
+          <Button 
+          color="inherit" 
+          onClick={() => navigate("/orders/admin")}
+          sx={{ 
+            '&:hover': { 
+              color: '#FFD700',
+              transform: 'scale(1.05)'
+            }
+          }}
+        >
+             {"כלל ההזמנות במערכת"}
+            </Button>
+        }
+
 
           {isAuthenticated ? 
           <>
           <Button 
           color="inherit" 
-          onClick={() => logout()}
+          onClick={() =>{ logout(); navigate("/");}}
           sx={{ 
             '&:hover': { 
               color: '#FFD700',
@@ -71,23 +99,8 @@ export const Navbar: React.FC = () => {
           }}
         >
              {"התנתקות"}
+             <LogoutIcon/>
             </Button>
-
-            <Typography
-          variant="h5"
-          component="div"
-          sx={{ 
-            flexGrow: 1, 
-            cursor: 'pointer',
-            fontWeight: 'bold',
-            background: 'linear-gradient(45deg, #FFD700, #FFF)',
-            backgroundClip: 'text',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-          }}
-        >
-          שלום, {user?.firstName}
-        </Typography>
             </>
              :
             <>
@@ -103,6 +116,7 @@ export const Navbar: React.FC = () => {
           }}
         >
              {"התחברות"}
+             <LoginIcon/>
             </Button>
              <Button 
           color="inherit" 
@@ -115,8 +129,11 @@ export const Navbar: React.FC = () => {
           }}
         >
              {"הרשמה"}
+             <AddToQueueIcon/>
             </Button>
             </>}
+
+        
       </Toolbar>
     </AppBar>
   );
